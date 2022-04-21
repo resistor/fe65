@@ -170,9 +170,9 @@ impl<T: AddressingType> AbsoluteAddressable for Opcode<T> {
     }
 }
 
-impl ZeroPageIndirectIndexedYAddressable for Opcode<Type01> {
+impl<T: AddressingType> ZeroPageIndirectIndexedYAddressable for Opcode<T> {
     fn zero_page_indirect_indexed_y(self, val: u8) -> Assembler {
-        self.two_byte_instruction(Type01::PATCH_ZERO_PAGE_INDIRECT_INDEXED_Y, val)
+        self.two_byte_instruction(T::PATCH_ZERO_PAGE_INDIRECT_INDEXED_Y, val)
     }
 }
 

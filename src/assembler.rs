@@ -42,15 +42,15 @@ macro_rules! branch_instruction {
 
 macro_rules! type_00_instruction {
     ($name:ident, $val:expr, $traits:ty) => {
-        pub fn $name(self) -> $traits {
-            Opcode::<Type01>::new(self, $val)
-        }
+        type_10_instruction!($name, $val, $traits);
     };
 }
 
 macro_rules! type_01_instruction {
     ($name:ident, $val:expr, $traits:ty) => {
-        type_00_instruction!($name, $val, $traits);
+        pub fn $name(self) -> $traits {
+            Opcode::<Type01>::new(self, $val)
+        }
     };
 }
 
