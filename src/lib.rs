@@ -1,7 +1,7 @@
 mod assembler;
 mod opcode;
-mod util;
 mod tests;
+mod util;
 
 pub use assembler::Assembler;
 pub use opcode::{
