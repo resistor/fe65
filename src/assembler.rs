@@ -3,8 +3,8 @@ use crate::util::push_byte;
 use crate::{
     AbsoluteAddressable, AbsoluteIndexedXAddressable, AbsoluteIndexedYAddressable,
     AbsoluteIndirectAddressable, AccumulatorAddressable, ImmediateAddressable, RelativeAddressable,
-    ZeroPageAddressable, ZeroPageIndexedXAddressable, ZeroPageIndexedYAddressable,
-    ZeroPageIndirectIndexedYAddressable,
+    ZeroPageAddressable, ZeroPageIndexedXAddressable, ZeroPageIndexedXIndirectAddressable,
+    ZeroPageIndexedYAddressable, ZeroPageIndirectIndexedYAddressable,
 };
 
 #[derive(Default)]
@@ -67,7 +67,7 @@ impl Assembler {
     type_01_instruction!(
         ora,
         0x01,
-        impl ZeroPageIndirectIndexedYAddressable
+        impl ZeroPageIndexedXIndirectAddressable
             + ZeroPageAddressable
             + ImmediateAddressable
             + AbsoluteAddressable
@@ -100,7 +100,7 @@ impl Assembler {
     type_01_instruction!(
         and,
         0x21,
-        impl ZeroPageIndirectIndexedYAddressable
+        impl ZeroPageIndexedXIndirectAddressable
             + ZeroPageAddressable
             + ImmediateAddressable
             + AbsoluteAddressable
@@ -125,7 +125,7 @@ impl Assembler {
     type_01_instruction!(
         eor,
         0x41,
-        impl ZeroPageIndirectIndexedYAddressable
+        impl ZeroPageIndexedXIndirectAddressable
             + ZeroPageAddressable
             + ImmediateAddressable
             + AbsoluteAddressable
@@ -150,7 +150,7 @@ impl Assembler {
     type_01_instruction!(
         adc,
         0x61,
-        impl ZeroPageIndirectIndexedYAddressable
+        impl ZeroPageIndexedXIndirectAddressable
             + ZeroPageAddressable
             + ImmediateAddressable
             + AbsoluteAddressable
@@ -179,7 +179,7 @@ impl Assembler {
     type_01_instruction!(
         sta,
         0x81,
-        impl ZeroPageIndirectIndexedYAddressable
+        impl ZeroPageIndexedXIndirectAddressable
             + ZeroPageAddressable
             + AbsoluteAddressable
             + ZeroPageIndirectIndexedYAddressable
@@ -209,7 +209,7 @@ impl Assembler {
     type_01_instruction!(
         lda,
         0xA1,
-        impl ZeroPageIndirectIndexedYAddressable
+        impl ZeroPageIndexedXIndirectAddressable
             + ZeroPageAddressable
             + ImmediateAddressable
             + AbsoluteAddressable
@@ -240,7 +240,7 @@ impl Assembler {
     type_01_instruction!(
         cmp,
         0xC1,
-        impl ZeroPageIndirectIndexedYAddressable
+        impl ZeroPageIndexedXIndirectAddressable
             + ZeroPageAddressable
             + ImmediateAddressable
             + AbsoluteAddressable
@@ -268,7 +268,7 @@ impl Assembler {
     type_01_instruction!(
         sbc,
         0xE1,
-        impl ZeroPageIndirectIndexedYAddressable
+        impl ZeroPageIndexedXIndirectAddressable
             + ZeroPageAddressable
             + ImmediateAddressable
             + AbsoluteAddressable
