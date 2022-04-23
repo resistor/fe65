@@ -71,7 +71,7 @@ impl AddressingType for Jmp {
     const PATCH_ACCUMULATOR: u8 = 0;
     const PATCH_RELATIVE: u8 = 0;
     const PATCH_ABSOLUTE: u8 = 0;
-    const PATCH_ABSOLUTE_INDIRECT: u8 = 0b01000000;
+    const PATCH_ABSOLUTE_INDIRECT: u8 = 0b00100000;
     const PATCH_ZERO_PAGE: u8 = 0;
     const PATCH_ZERO_PAGE_INDEXED_X: u8 = 0;
     const PATCH_ZERO_PAGE_INDEXED_Y: u8 = 0;
