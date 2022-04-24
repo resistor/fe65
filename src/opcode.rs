@@ -1,6 +1,8 @@
+use crate::assembler::{Relocation, RelocationType};
 use crate::util::push_byte;
 use crate::util::push_u16_le;
 use crate::Assembler;
+use crate::Label;
 
 pub trait ZeroPageIndexedXIndirectAddressable {
     fn zero_page_indexed_x_indirect(self, val: u8) -> Assembler;
@@ -16,6 +18,7 @@ pub trait ImmediateAddressable {
 
 pub trait AbsoluteAddressable {
     fn absolute(self, val: u16) -> Assembler;
+    fn label(self, label: &Label) -> Assembler;
 }
 
 pub trait AbsoluteIndirectAddressable {
@@ -48,6 +51,7 @@ pub trait AccumulatorAddressable {
 
 pub trait RelativeAddressable {
     fn relative(self, val: i8) -> Assembler;
+    fn label(self, label: &Label) -> Assembler;
 }
 
 pub trait AddressingType {
@@ -129,20 +133,29 @@ impl<T: AddressingType> Opcode<T> {
     }
 
     fn one_byte_instruction(self, patch: u8) -> Assembler {
-        let bytes = push_byte(self.assembler.take_bytes(), self.opcode | patch);
-        Assembler::from_bytes(bytes)
+        let bytes = push_byte(self.assembler.bytes, self.opcode | patch);
+        Assembler {
+            bytes,
+            ..self.assembler
+        }
     }
 
     fn two_byte_instruction(self, patch: u8, val: u8) -> Assembler {
-        let bytes = push_byte(self.assembler.take_bytes(), self.opcode | patch);
+        let bytes = push_byte(self.assembler.bytes, self.opcode | patch);
         let bytes = push_byte(bytes, val);
-        Assembler::from_bytes(bytes)
+        Assembler {
+            bytes,
+            ..self.assembler
+        }
     }
 
     fn three_byte_instruction(self, patch: u8, val: u16) -> Assembler {
-        let bytes = push_byte(self.assembler.take_bytes(), self.opcode | patch);
+        let bytes = push_byte(self.assembler.bytes, self.opcode | patch);
         let bytes = push_u16_le(bytes, val);
-        Assembler::from_bytes(bytes)
+        Assembler {
+            bytes,
+            ..self.assembler
+        }
     }
 }
 
@@ -167,6 +180,19 @@ impl<T: AddressingType> ImmediateAddressable for Opcode<T> {
 impl<T: AddressingType> AbsoluteAddressable for Opcode<T> {
     fn absolute(self, val: u16) -> Assembler {
         self.three_byte_instruction(T::PATCH_ABSOLUTE, val)
+    }
+
+    fn label(mut self, label: &Label) -> Assembler {
+        if let Some(target) = self.assembler.local_labels[label.idx] {
+            self.three_byte_instruction(T::PATCH_ABSOLUTE, target as u16)
+        } else {
+            self.assembler.relocations.push(Relocation {
+                reloc: RelocationType::Absolute,
+                label: label.idx,
+                vaddr: (self.assembler.bytes.len() + 1) as u16,
+            });
+            self.three_byte_instruction(T::PATCH_ABSOLUTE, 0)
+        }
     }
 }
 
@@ -215,5 +241,20 @@ impl<T: AddressingType> ZeroPageIndexedYAddressable for Opcode<T> {
 impl<T: AddressingType> RelativeAddressable for Opcode<T> {
     fn relative(self, val: i8) -> Assembler {
         self.two_byte_instruction(T::PATCH_RELATIVE, val as u8)
+    }
+
+    fn label(mut self, label: &Label) -> Assembler {
+        if let Some(target) = self.assembler.local_labels[label.idx] {
+            // FIXME: Check for in-range offsets,
+            let offset = (target as isize) - (self.assembler.len() as isize);
+            self.two_byte_instruction(T::PATCH_RELATIVE, offset as u8)
+        } else {
+            self.assembler.relocations.push(Relocation {
+                reloc: RelocationType::RelativePlusOne,
+                label: label.idx,
+                vaddr: (self.assembler.bytes.len() + 1) as u16,
+            });
+            self.two_byte_instruction(T::PATCH_RELATIVE, 0)
+        }
     }
 }

@@ -9,16 +9,82 @@ use crate::{
 
 #[derive(Default)]
 pub struct Assembler {
-    bytes: Vec<u8>,
+    pub(crate) bytes: Vec<u8>,
+    pub(crate) local_labels: Vec<Option<usize>>,
+    pub(crate) relocations: Vec<Relocation>,
+}
+
+pub struct Label {
+    pub(crate) idx: usize,
+}
+
+pub(crate) enum RelocationType {
+    Absolute,
+    RelativePlusOne,
+}
+
+pub(crate) struct Relocation {
+    pub(crate) reloc: RelocationType,
+    pub(crate) label: usize,
+    pub(crate) vaddr: u16,
 }
 
 impl Assembler {
     pub fn from_bytes(bytes: Vec<u8>) -> Assembler {
-        Assembler { bytes }
+        Assembler {
+            bytes,
+            ..Self::default()
+        }
     }
 
     pub fn take_bytes(self) -> Vec<u8> {
         self.bytes
+    }
+
+    pub fn len(&self) -> usize {
+        self.bytes.len()
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.bytes.is_empty()
+    }
+
+    pub fn create_label(mut self) -> (Assembler, Label) {
+        let idx = self.local_labels.len();
+        self.local_labels.push(None);
+        (self, Label { idx })
+    }
+
+    pub fn create_bound_label(mut self) -> (Assembler, Label) {
+        let idx = self.local_labels.len();
+        self.local_labels.push(Some(self.len()));
+        (self, Label { idx })
+    }
+
+    pub fn bind_label(mut self, label: &Label) -> Assembler {
+        let position = self.len() as usize;
+        self.local_labels[label.idx] = Some(position as usize);
+        self.relocations
+            .iter()
+            .filter(|reloc| reloc.label == label.idx)
+            .for_each(|reloc| match &reloc.reloc {
+                RelocationType::Absolute => {
+                    let bytes = position.to_le_bytes();
+                    self.bytes[reloc.vaddr as usize] = bytes[0];
+                    self.bytes[(reloc.vaddr + 1) as usize] = bytes[1];
+                }
+                RelocationType::RelativePlusOne => {
+                    let displacement = (position as isize) - (reloc.vaddr as isize) + 1;
+                    let bytes = displacement.to_le_bytes();
+                    self.bytes[reloc.vaddr as usize] = bytes[0];
+                }
+            });
+        self.relocations = self
+            .relocations
+            .into_iter()
+            .filter(|reloc| reloc.label != label.idx)
+            .collect();
+        self
     }
 }
 
@@ -27,6 +93,7 @@ macro_rules! single_byte_instruction {
         pub fn $name(self) -> Assembler {
             Assembler {
                 bytes: push_byte(self.bytes, $val),
+                ..self
             }
         }
     };

@@ -1,9 +1,10 @@
 mod assembler;
 mod opcode;
-mod tests;
+mod test_labels;
+mod test_opcodes;
 mod util;
 
-pub use assembler::Assembler;
+pub use assembler::{Assembler, Label};
 pub use opcode::{
     AbsoluteAddressable, AbsoluteIndexedXAddressable, AbsoluteIndexedYAddressable,
     AbsoluteIndirectAddressable, AccumulatorAddressable, ImmediateAddressable, RelativeAddressable,
