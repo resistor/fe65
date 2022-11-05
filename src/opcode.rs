@@ -196,9 +196,9 @@ impl<T: AddressingType> AbsoluteAddressable for Opcode<T> {
     }
 }
 
-impl<T: AddressingType> ZeroPageIndirectIndexedYAddressable for Opcode<T> {
+impl ZeroPageIndirectIndexedYAddressable for Opcode<Type01> {
     fn zero_page_indirect_indexed_y(self, val: u8) -> Assembler {
-        self.two_byte_instruction(T::PATCH_ZERO_PAGE_INDIRECT_INDEXED_Y, val)
+        self.two_byte_instruction(Type01::PATCH_ZERO_PAGE_INDIRECT_INDEXED_Y, val)
     }
 }
 
@@ -226,35 +226,35 @@ impl<T: AddressingType> ZeroPageAddressable for Opcode<T> {
     }
 }
 
-impl<T: AddressingType> AccumulatorAddressable for Opcode<T> {
+impl AccumulatorAddressable for Opcode<Type10> {
     fn accumulator(self) -> Assembler {
-        self.one_byte_instruction(T::PATCH_ACCUMULATOR)
+        self.one_byte_instruction(Type10::PATCH_ACCUMULATOR)
     }
 }
 
-impl<T: AddressingType> ZeroPageIndexedYAddressable for Opcode<T> {
+impl ZeroPageIndexedYAddressable for Opcode<Type10> {
     fn zero_page_indexed_y(self, val: u8) -> Assembler {
-        self.two_byte_instruction(T::PATCH_ZERO_PAGE_INDEXED_Y, val)
+        self.two_byte_instruction(Type10::PATCH_ZERO_PAGE_INDEXED_Y, val)
     }
 }
 
-impl<T: AddressingType> RelativeAddressable for Opcode<T> {
+impl RelativeAddressable for Opcode<Jmp> {
     fn relative(self, val: i8) -> Assembler {
-        self.two_byte_instruction(T::PATCH_RELATIVE, val as u8)
+        self.two_byte_instruction(Jmp::PATCH_RELATIVE, val as u8)
     }
 
     fn label(mut self, label: &Label) -> Assembler {
         if let Some(target) = self.assembler.local_labels[label.idx] {
             // FIXME: Check for in-range offsets,
             let offset = (target as isize) - (self.assembler.len() as isize);
-            self.two_byte_instruction(T::PATCH_RELATIVE, offset as u8)
+            self.two_byte_instruction(Jmp::PATCH_RELATIVE, offset as u8)
         } else {
             self.assembler.relocations.push(Relocation {
                 reloc: RelocationType::RelativePlusOne,
                 label: label.idx,
                 vaddr: (self.assembler.bytes.len() + 1) as u16,
             });
-            self.two_byte_instruction(T::PATCH_RELATIVE, 0)
+            self.two_byte_instruction(Jmp::PATCH_RELATIVE, 0)
         }
     }
 }
