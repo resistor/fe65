@@ -79,11 +79,7 @@ impl Assembler {
                     self.bytes[reloc.vaddr as usize] = bytes[0];
                 }
             });
-        self.relocations = self
-            .relocations
-            .into_iter()
-            .filter(|reloc| reloc.label != label.idx)
-            .collect();
+        self.relocations.retain(|reloc| reloc.label == label.idx);
         self
     }
 }
