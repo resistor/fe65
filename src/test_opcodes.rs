@@ -4,42 +4,42 @@ use crate::*;
 #[test]
 fn adc_test() {
     let asm = Assembler::default();
-    let asm = asm.adc().zero_page_indexed_x_indirect(0xAB);
+    let asm = asm.adc(global(zp(X + 0xAB)));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x61, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.adc().zero_page_indirect_indexed_y(0xAB);
+    let asm = asm.adc(global(Y + zp(0xAB)));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x71, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.adc().zero_page(0xAB);
+    let asm = asm.adc(zp(0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x65, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.adc().zero_page_indexed_x(0xAB);
+    let asm = asm.adc(zp(X + 0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x75, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.adc().immediate(0xAB);
+    let asm = asm.adc(0xAB);
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x69, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.adc().absolute_indexed_y(0xABCD);
+    let asm = asm.adc(global(Y + 0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x79, 0xCD, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.adc().absolute(0xABCD);
+    let asm = asm.adc(global(0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x6D, 0xCD, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.adc().absolute_indexed_x(0xABCD);
+    let asm = asm.adc(global(X + 0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x7D, 0xCD, 0xAB]);
 }
@@ -47,42 +47,42 @@ fn adc_test() {
 #[test]
 fn and_test() {
     let asm = Assembler::default();
-    let asm = asm.and().zero_page_indexed_x_indirect(0xAB);
+    let asm = asm.and(global(zp(X + 0xAB)));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x21, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.and().zero_page_indirect_indexed_y(0xAB);
+    let asm = asm.and(global(Y + zp(0xAB)));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x31, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.and().zero_page(0xAB);
+    let asm = asm.and(zp(0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x25, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.and().zero_page_indexed_x(0xAB);
+    let asm = asm.and(zp(X + 0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x35, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.and().immediate(0xAB);
+    let asm = asm.and(0xAB);
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x29, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.and().absolute_indexed_y(0xABCD);
+    let asm = asm.and(global(Y + 0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x39, 0xCD, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.and().absolute(0xABCD);
+    let asm = asm.and(global(0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x2D, 0xCD, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.and().absolute_indexed_x(0xABCD);
+    let asm = asm.and(global(X + 0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x3D, 0xCD, 0xAB]);
 }
@@ -90,27 +90,27 @@ fn and_test() {
 #[test]
 fn asl_test() {
     let asm = Assembler::default();
-    let asm = asm.asl().zero_page(0xAB);
+    let asm = asm.asl(zp(0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x06, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.asl().zero_page_indexed_x(0xAB);
+    let asm = asm.asl(zp(X + 0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x16, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.asl().accumulator();
+    let asm = asm.asl(A);
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x0A]);
 
     let asm = Assembler::default();
-    let asm = asm.asl().absolute(0xABCD);
+    let asm = asm.asl(global(0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x0E, 0xCD, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.asl().absolute_indexed_x(0xABCD);
+    let asm = asm.asl(global(X + 0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x1E, 0xCD, 0xAB]);
 }
@@ -118,8 +118,8 @@ fn asl_test() {
 #[test]
 fn bcc_test() {
     let asm = Assembler::default();
-    let asm = asm.bcc().relative(-128);
-    let asm = asm.bcc().relative(127);
+    let asm = asm.bcc(-128);
+    let asm = asm.bcc(127);
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x90, 0x80, 0x90, 0x7F]);
 }
@@ -127,8 +127,8 @@ fn bcc_test() {
 #[test]
 fn bcs_test() {
     let asm = Assembler::default();
-    let asm = asm.bcs().relative(-128);
-    let asm = asm.bcs().relative(127);
+    let asm = asm.bcs(-128);
+    let asm = asm.bcs(127);
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xB0, 0x80, 0xB0, 0x7F]);
 }
@@ -136,8 +136,8 @@ fn bcs_test() {
 #[test]
 fn beq_test() {
     let asm = Assembler::default();
-    let asm = asm.beq().relative(-128);
-    let asm = asm.beq().relative(127);
+    let asm = asm.beq(-128);
+    let asm = asm.beq(127);
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xF0, 0x80, 0xF0, 0x7F]);
 }
@@ -145,12 +145,12 @@ fn beq_test() {
 #[test]
 fn bit_test() {
     let asm = Assembler::default();
-    let asm = asm.bit().zero_page(0xAB);
+    let asm = asm.bit(zp(0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x24, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.bit().absolute(0xABCD);
+    let asm = asm.bit(global(0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x2C, 0xCD, 0xAB]);
 }
@@ -158,8 +158,8 @@ fn bit_test() {
 #[test]
 fn bmi_test() {
     let asm = Assembler::default();
-    let asm = asm.bmi().relative(-128);
-    let asm = asm.bmi().relative(127);
+    let asm = asm.bmi(-128);
+    let asm = asm.bmi(127);
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x30, 0x80, 0x30, 0x7F]);
 }
@@ -175,8 +175,8 @@ fn brk_test() {
 #[test]
 fn bne_test() {
     let asm = Assembler::default();
-    let asm = asm.bne().relative(-128);
-    let asm = asm.bne().relative(127);
+    let asm = asm.bne(-128);
+    let asm = asm.bne(127);
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xD0, 0x80, 0xD0, 0x7F]);
 }
@@ -184,8 +184,8 @@ fn bne_test() {
 #[test]
 fn bpl_test() {
     let asm = Assembler::default();
-    let asm = asm.bpl().relative(-128);
-    let asm = asm.bpl().relative(127);
+    let asm = asm.bpl(-128);
+    let asm = asm.bpl(127);
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x10, 0x80, 0x10, 0x7F]);
 }
@@ -193,8 +193,8 @@ fn bpl_test() {
 #[test]
 fn bvc_test() {
     let asm = Assembler::default();
-    let asm = asm.bvc().relative(-128);
-    let asm = asm.bvc().relative(127);
+    let asm = asm.bvc(-128);
+    let asm = asm.bvc(127);
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x50, 0x80, 0x50, 0x7F]);
 }
@@ -202,8 +202,8 @@ fn bvc_test() {
 #[test]
 fn bvs_test() {
     let asm = Assembler::default();
-    let asm = asm.bvs().relative(-128);
-    let asm = asm.bvs().relative(127);
+    let asm = asm.bvs(-128);
+    let asm = asm.bvs(127);
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x70, 0x80, 0x70, 0x7F]);
 }
@@ -244,42 +244,42 @@ fn clv_test() {
 #[test]
 fn cmp_test() {
     let asm = Assembler::default();
-    let asm = asm.cmp().zero_page_indexed_x_indirect(0xAB);
+    let asm = asm.cmp(global(zp(X + 0xAB)));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xC1, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.cmp().zero_page_indirect_indexed_y(0xAB);
+    let asm = asm.cmp(global(Y + zp(0xAB)));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xD1, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.cmp().zero_page(0xAB);
+    let asm = asm.cmp(zp(0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xC5, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.cmp().zero_page_indexed_x(0xAB);
+    let asm = asm.cmp(zp(X + 0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xD5, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.cmp().immediate(0xAB);
+    let asm = asm.cmp(0xAB);
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xC9, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.cmp().absolute_indexed_y(0xABCD);
+    let asm = asm.cmp(global(Y + 0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xD9, 0xCD, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.cmp().absolute(0xABCD);
+    let asm = asm.cmp(global(0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xCD, 0xCD, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.cmp().absolute_indexed_x(0xABCD);
+    let asm = asm.cmp(global(X + 0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xDD, 0xCD, 0xAB]);
 }
@@ -287,17 +287,17 @@ fn cmp_test() {
 #[test]
 fn cpx_test() {
     let asm = Assembler::default();
-    let asm = asm.cpx().immediate(0xAB);
+    let asm = asm.cpx(0xAB);
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xE0, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.cpx().zero_page(0xAB);
+    let asm = asm.cpx(zp(0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xE4, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.cpx().absolute(0xABCD);
+    let asm = asm.cpx(global(0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xEC, 0xCD, 0xAB]);
 }
@@ -305,17 +305,17 @@ fn cpx_test() {
 #[test]
 fn cpy_test() {
     let asm = Assembler::default();
-    let asm = asm.cpy().immediate(0xAB);
+    let asm = asm.cpy(0xAB);
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xC0, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.cpy().zero_page(0xAB);
+    let asm = asm.cpy(zp(0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xC4, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.cpy().absolute(0xABCD);
+    let asm = asm.cpy(global(0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xCC, 0xCD, 0xAB]);
 }
@@ -323,22 +323,22 @@ fn cpy_test() {
 #[test]
 fn dec_test() {
     let asm = Assembler::default();
-    let asm = asm.dec().zero_page(0xAB);
+    let asm = asm.dec(zp(0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xC6, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.dec().zero_page_indexed_x(0xAB);
+    let asm = asm.dec(zp(X + 0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xD6, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.dec().absolute(0xABCD);
+    let asm = asm.dec(global(0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xCE, 0xCD, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.dec().absolute_indexed_x(0xABCD);
+    let asm = asm.dec(global(X + 0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xDE, 0xCD, 0xAB]);
 }
@@ -362,42 +362,42 @@ fn dey_test() {
 #[test]
 fn eor_test() {
     let asm = Assembler::default();
-    let asm = asm.eor().zero_page_indexed_x_indirect(0xAB);
+    let asm = asm.eor(global(zp(X + 0xAB)));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x41, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.eor().zero_page_indirect_indexed_y(0xAB);
+    let asm = asm.eor(global(Y + zp(0xAB)));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x51, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.eor().zero_page(0xAB);
+    let asm = asm.eor(zp(0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x45, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.eor().zero_page_indexed_x(0xAB);
+    let asm = asm.eor(zp(X + 0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x55, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.eor().immediate(0xAB);
+    let asm = asm.eor(0xAB);
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x49, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.eor().absolute_indexed_y(0xABCD);
+    let asm = asm.eor(global(Y + 0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x59, 0xCD, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.eor().absolute(0xABCD);
+    let asm = asm.eor(global(0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x4D, 0xCD, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.eor().absolute_indexed_x(0xABCD);
+    let asm = asm.eor(global(X + 0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x5D, 0xCD, 0xAB]);
 }
@@ -405,22 +405,22 @@ fn eor_test() {
 #[test]
 fn inc_test() {
     let asm = Assembler::default();
-    let asm = asm.inc().zero_page(0xAB);
+    let asm = asm.inc(zp(0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xE6, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.inc().zero_page_indexed_x(0xAB);
+    let asm = asm.inc(zp(X + 0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xF6, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.inc().absolute(0xABCD);
+    let asm = asm.inc(global(0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xEE, 0xCD, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.inc().absolute_indexed_x(0xABCD);
+    let asm = asm.inc(global(X + 0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xFE, 0xCD, 0xAB]);
 }
@@ -444,12 +444,12 @@ fn iny_test() {
 #[test]
 fn jmp_test() {
     let asm = Assembler::default();
-    let asm = asm.jmp().absolute(0xABCD);
+    let asm = asm.jmp(global(0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x4C, 0xCD, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.jmp().absolute_indirect(0xABCD);
+    let asm = asm.jmp(global(global(0xABCD)));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x6C, 0xCD, 0xAB]);
 }
@@ -457,7 +457,7 @@ fn jmp_test() {
 #[test]
 fn jsr_test() {
     let asm = Assembler::default();
-    let asm = asm.jsr().absolute(0xABCD);
+    let asm = asm.jsr(global(0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x20, 0xCD, 0xAB]);
 }
@@ -465,42 +465,42 @@ fn jsr_test() {
 #[test]
 fn lda_test() {
     let asm = Assembler::default();
-    let asm = asm.lda().zero_page_indexed_x_indirect(0xAB);
+    let asm = asm.lda(global(zp(X + 0xAB)));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xA1, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.lda().zero_page_indirect_indexed_y(0xAB);
+    let asm = asm.lda(global(Y + zp(0xAB)));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xB1, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.lda().zero_page(0xAB);
+    let asm = asm.lda(zp(0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xA5, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.lda().zero_page_indexed_x(0xAB);
+    let asm = asm.lda(zp(X + 0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xB5, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.lda().immediate(0xAB);
+    let asm = asm.lda(0xAB);
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xA9, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.lda().absolute_indexed_y(0xABCD);
+    let asm = asm.lda(global(Y + 0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xB9, 0xCD, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.lda().absolute(0xABCD);
+    let asm = asm.lda(global(0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xAD, 0xCD, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.lda().absolute_indexed_x(0xABCD);
+    let asm = asm.lda(global(X + 0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xBD, 0xCD, 0xAB]);
 }
@@ -508,27 +508,27 @@ fn lda_test() {
 #[test]
 fn ldx_test() {
     let asm = Assembler::default();
-    let asm = asm.ldx().immediate(0xAB);
+    let asm = asm.ldx(0xAB);
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xA2, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.ldx().zero_page(0xAB);
+    let asm = asm.ldx(zp(0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xA6, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.ldx().zero_page_indexed_y(0xAB);
+    let asm = asm.ldx(zp(Y + 0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xB6, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.ldx().absolute(0xABCD);
+    let asm = asm.ldx(global(0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xAE, 0xCD, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.ldx().absolute_indexed_y(0xABCD);
+    let asm = asm.ldx(global(Y + 0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xBE, 0xCD, 0xAB]);
 }
@@ -536,17 +536,17 @@ fn ldx_test() {
 #[test]
 fn ldy_test() {
     let asm = Assembler::default();
-    let asm = asm.ldy().immediate(0xAB);
+    let asm = asm.ldy(0xAB);
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xA0, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.ldy().absolute(0xABCD);
+    let asm = asm.ldy(global(0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xAC, 0xCD, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.ldy().absolute_indexed_x(0xABCD);
+    let asm = asm.ldy(global(X + 0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xBC, 0xCD, 0xAB]);
 }
@@ -554,27 +554,27 @@ fn ldy_test() {
 #[test]
 fn lsr_test() {
     let asm = Assembler::default();
-    let asm = asm.lsr().zero_page(0xAB);
+    let asm = asm.lsr(zp(0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x46, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.lsr().zero_page_indexed_x(0xAB);
+    let asm = asm.lsr(zp(X + 0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x56, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.lsr().accumulator();
+    let asm = asm.lsr(A);
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x4A]);
 
     let asm = Assembler::default();
-    let asm = asm.lsr().absolute(0xABCD);
+    let asm = asm.lsr(global(0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x4E, 0xCD, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.lsr().absolute_indexed_x(0xABCD);
+    let asm = asm.lsr(global(X + 0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x5E, 0xCD, 0xAB]);
 }
@@ -590,42 +590,42 @@ fn nop_test() {
 #[test]
 fn ora_test() {
     let asm = Assembler::default();
-    let asm = asm.ora().zero_page_indexed_x_indirect(0xAB);
+    let asm = asm.ora(global(zp(X + 0xAB)));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x01, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.ora().zero_page_indirect_indexed_y(0xAB);
+    let asm = asm.ora(global(Y + zp(0xAB)));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x11, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.ora().zero_page(0xAB);
+    let asm = asm.ora(zp(0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x05, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.ora().zero_page_indexed_x(0xAB);
+    let asm = asm.ora(zp(X + 0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x15, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.ora().immediate(0xAB);
+    let asm = asm.ora(0xAB);
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x09, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.ora().absolute_indexed_y(0xABCD);
+    let asm = asm.ora(global(Y + 0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x19, 0xCD, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.ora().absolute(0xABCD);
+    let asm = asm.ora(global(0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x0D, 0xCD, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.ora().absolute_indexed_x(0xABCD);
+    let asm = asm.ora(global(X + 0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x1D, 0xCD, 0xAB]);
 }
@@ -681,27 +681,27 @@ fn sed_test() {
 #[test]
 fn rol_test() {
     let asm = Assembler::default();
-    let asm = asm.rol().zero_page(0xAB);
+    let asm = asm.rol(zp(0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x26, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.rol().zero_page_indexed_x(0xAB);
+    let asm = asm.rol(zp(X + 0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x36, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.rol().accumulator();
+    let asm = asm.rol(A);
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x2A]);
 
     let asm = Assembler::default();
-    let asm = asm.rol().absolute(0xABCD);
+    let asm = asm.rol(global(0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x2E, 0xCD, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.rol().absolute_indexed_x(0xABCD);
+    let asm = asm.rol(global(X + 0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x3E, 0xCD, 0xAB]);
 }
@@ -709,27 +709,27 @@ fn rol_test() {
 #[test]
 fn ror_test() {
     let asm = Assembler::default();
-    let asm = asm.ror().zero_page(0xAB);
+    let asm = asm.ror(zp(0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x66, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.ror().zero_page_indexed_x(0xAB);
+    let asm = asm.ror(zp(X + 0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x76, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.ror().accumulator();
+    let asm = asm.ror(A);
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x6A]);
 
     let asm = Assembler::default();
-    let asm = asm.ror().absolute(0xABCD);
+    let asm = asm.ror(global(0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x6E, 0xCD, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.ror().absolute_indexed_x(0xABCD);
+    let asm = asm.ror(global(X + 0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x7E, 0xCD, 0xAB]);
 }
@@ -753,42 +753,42 @@ fn rts_test() {
 #[test]
 fn sbc_test() {
     let asm = Assembler::default();
-    let asm = asm.sbc().zero_page_indexed_x_indirect(0xAB);
+    let asm = asm.sbc(global(zp(X + 0xAB)));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xE1, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.sbc().zero_page_indirect_indexed_y(0xAB);
+    let asm = asm.sbc(global(Y + zp(0xAB)));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xF1, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.sbc().zero_page(0xAB);
+    let asm = asm.sbc(zp(0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xE5, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.sbc().zero_page_indexed_x(0xAB);
+    let asm = asm.sbc(zp(X + 0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xF5, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.sbc().immediate(0xAB);
+    let asm = asm.sbc(0xAB);
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xE9, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.sbc().absolute_indexed_y(0xABCD);
+    let asm = asm.sbc(global(Y + 0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xF9, 0xCD, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.sbc().absolute(0xABCD);
+    let asm = asm.sbc(global(0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xED, 0xCD, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.sbc().absolute_indexed_x(0xABCD);
+    let asm = asm.sbc(global(X + 0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0xFD, 0xCD, 0xAB]);
 }
@@ -804,45 +804,50 @@ fn sec_test() {
 #[test]
 fn sta_test() {
     let asm = Assembler::default();
-    let asm = asm.sta().zero_page_indexed_x_indirect(0xAB);
+    let asm = asm.sta(global(zp(X + 0xAB)));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x81, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.sta().zero_page_indirect_indexed_y(0xAB);
+    let asm = asm.sta(global(Y + zp(0xAB)));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x91, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.sta().zero_page(0xAB);
+    let asm = asm.sta(zp(0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x85, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.sta().zero_page_indexed_x(0xAB);
+    let asm = asm.sta(zp(X + 0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x95, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.sta().absolute_indexed_y(0xABCD);
+    let asm = asm.sta(global(Y + 0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x99, 0xCD, 0xAB]);
+
+    let asm = Assembler::default();
+    let asm = asm.sta(global(X + 0xABCD));
+    let bytes = asm.take_bytes();
+    assert_eq!(bytes, vec![0x9D, 0xCD, 0xAB]);
 }
 
 #[test]
 fn stx_test() {
     let asm = Assembler::default();
-    let asm = asm.stx().zero_page(0xAB);
+    let asm = asm.stx(zp(0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x86, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.stx().zero_page_indexed_y(0xAB);
+    let asm = asm.stx(zp(Y + 0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x96, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.stx().absolute(0xABCD);
+    let asm = asm.stx(global(0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x8E, 0xCD, 0xAB]);
 }
@@ -850,17 +855,17 @@ fn stx_test() {
 #[test]
 fn sty_test() {
     let asm = Assembler::default();
-    let asm = asm.sty().zero_page(0xAB);
+    let asm = asm.sty(zp(0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x84, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.sty().zero_page_indexed_x(0xAB);
+    let asm = asm.sty(zp(X + 0xAB));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x94, 0xAB]);
 
     let asm = Assembler::default();
-    let asm = asm.sty().absolute(0xABCD);
+    let asm = asm.sty(global(0xABCD));
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x8C, 0xCD, 0xAB]);
 }

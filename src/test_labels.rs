@@ -7,7 +7,7 @@ fn backward_label_absolute() {
     let asm = asm.txa();
     let (asm, back) = asm.create_bound_label();
     let asm = asm.txa();
-    let asm = asm.jmp().label(&back);
+    let asm = asm.jmp(back);
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x8A, 0x8A, 0x4C, 0x01, 0x00]);
 }
@@ -18,7 +18,7 @@ fn backward_label_relative() {
     let asm = asm.txa();
     let (asm, back) = asm.create_bound_label();
     let asm = asm.txa();
-    let asm = asm.bcc().label(&back);
+    let asm = asm.bcc(back);
     let bytes = asm.take_bytes();
     assert_eq!(bytes, vec![0x8A, 0x8A, 0x90, 0xFF]);
 }
@@ -27,7 +27,7 @@ fn backward_label_relative() {
 fn forward_label_absolute() {
     let asm = Assembler::default();
     let (asm, label) = asm.create_label();
-    let asm = asm.jmp().label(&label);
+    let asm = asm.jmp(label);
     let asm = asm.txa();
     let asm = asm.bind_label(&label);
     let asm = asm.txa();
@@ -39,7 +39,7 @@ fn forward_label_absolute() {
 fn forward_label_relative() {
     let asm = Assembler::default();
     let (asm, label) = asm.create_label();
-    let asm = asm.bcc().label(&label);
+    let asm = asm.bcc(label);
     let asm = asm.txa();
     let asm = asm.bind_label(&label);
     let asm = asm.txa();
